@@ -1,0 +1,33 @@
+FROM        python:3.6.4-slim
+MAINTAINER  a186075306@gmail.com
+
+# apt-get으로 nginx, supervisor설치
+RUN         apt-get -y update
+RUN         apt-get -y dist-upgrade
+RUN         apt-get -y install build-essential nginx supervisor
+
+# requirements만 복사
+COPY        .requirements /srv/.requirements
+
+# pip install
+WORKDIR     /srv
+RUN         pip install -r /srv/.requirements/dev.txt
+
+# 소스폴더를 통째로 복사
+COPY        . /srv/project
+
+# nginx설정파일을 복사 및 링크
+RUN         cp -f   /srv/project/.config/local/nginx.conf       /etc/nginx/nginx.conf &&\
+            cp -f   /srv/project/.config/local/nginx-app.conf   /etc/nginx/sites-available/ &&\
+            rm -f   /etc/nginx/sites-enabled/* &&\
+            ln -sf  /etc/nginx/sites-available/nginx-app.conf   /etc/nginx/sites-enabled/
+
+# supervisor설정파일을 복사
+RUN         cp -f   /srv/project/.config/local/supervisord.conf /etc/supervisor/conf.d/
+
+# Sqlite DB migrate, createsuperuser
+WORKDIR     /srv/project/app
+RUN         python manage.py migrate && python manage.py createsu
+
+# pkill nginx후 supervisord -n실행
+CMD         pkill nginx; supervisord -n

@@ -1,0 +1,37 @@
+{% load static %}
+<!doctype html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+	      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Food-Fly Docker Deploy</title>
+	<link rel="stylesheet" href="{% static 'bootstrap/css/bootstrap.css' %}">
+</head>
+<body>
+	<div class="container">
+		<table class="table">
+			<caption>List of users</caption>
+			<thead class="thead-dark">
+			<tr>
+				<th scope="col">ID</th>
+				<th scope="col">Username</th>
+				<th scope="col">Nickname</th>
+				<th scope="col">Profile Img</th>
+			</tr>
+			</thead>
+			<tbody>
+				{% for user in users %}
+				<tr>
+					<th scope="row">{{ user.pk }}</th>
+					<td>{{ user.username }}</td>
+					<td>{{ user.nickname }}</td>
+					<td>{% if user.img_profile %}<img src="{{ user.img_profile.url }}" alt="">{% endif %}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</body>
+</html>
