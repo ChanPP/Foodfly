@@ -11,17 +11,20 @@ __all__ = (
 
 class SignupForm(forms.Form):
     username = forms.CharField(label='아이디')
+    nickname = forms.CharField(label='닉네임')
     password = forms.CharField(label='비밀번호', widget=forms.PasswordInput)
     password2 = forms.CharField(label='비밀번호 확인', widget=forms.PasswordInput)
-    telephone = forms.CharField(label="연락처", max_length=11)
-    address = forms.CharField(label='배송지')
-    signup_hub = forms.CharField(label='가입경로 Test')
-    Terms_conditions = forms.CharField(label='이용약관 test')
 
     def clean_username(self):
         data = self.cleaned_data['username']
         if User.objects.filter(username=data).exists():
             raise ValidationError('이미 사용중인 아이디입니다')
+        return data
+
+    def clean_nickname(self):
+        data = self.cleaned_data['nickname']
+        if User.objects.filter(username=data).exists():
+            raise ValidationError('이미 사용중인 닉네임입니다')
         return data
 
     def clean_password2(self):
@@ -30,5 +33,3 @@ class SignupForm(forms.Form):
         if password1 != password2:
             raise ValidationError('비밀번호와 비밀번호 확인란의 값이 다릅니다')
         return password2
-
-#test

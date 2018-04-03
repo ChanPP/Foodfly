@@ -18,12 +18,13 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path
 
-from . import views
-
+import members.views
+import users.views
 urlpatterns = [
     path('admin/', admin.site.urls),
 
-    path('', views.index, name='index'),
+    path('', members.views.index, name='index'),
+    path('signup/', users.views.signup_view, name='test'),
 ]
 urlpatterns += static(
     settings.MEDIA_URL,

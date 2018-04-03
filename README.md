@@ -1,4 +1,4 @@
-# Food fly
+# project-point
 
 Elastic Beanstalk에 Nginx-uWSGI-Django로 구성된 Docker 이미지를 배포합니다.
 
