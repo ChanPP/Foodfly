@@ -10,6 +10,7 @@ ALLOWED_HOSTS = [
     '.elasticbeanstalk.com',
     '.chan428.kr',
     '172.31.6.244',
+
 ]
 
 

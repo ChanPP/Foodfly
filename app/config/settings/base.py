@@ -28,6 +28,9 @@ SECRETS_PRODUCTION = os.path.join(SECRETS_DIR, 'production.json')
 
 secrets = json.loads(open(SECRETS_BASE, 'rt').read())
 
+SOCIAL_AUTH_URL_NAMESPACE = 'social'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
+
 
 def set_config(obj, module_name=None, start=False):
     """
@@ -100,7 +103,7 @@ def set_config(obj, module_name=None, start=False):
 # raven모듈을 importlib를 사용해 가져온 후 현재 모듈에 'raven'이라는 이름으로 할당
 setattr(sys.modules[__name__], 'raven', importlib.import_module('raven'))
 set_config(secrets, module_name=__name__, start=True)
-print(getattr(sys.modules[__name__], 'RAVEN_CONFIG'))
+# print(getattr(sys.modules[__name__], 'RAVEN_CONFIG'))
 
 # Static
 STATIC_URL = '/static/'
@@ -111,6 +114,8 @@ MEDIA_ROOT = os.path.join(ROOT_DIR, '.media')
 STATICFILES_DIRS = [
     STATIC_DIR,
 ]
+
+
 
 # Auth
 AUTH_USER_MODEL = 'members.User'
@@ -127,9 +132,18 @@ INSTALLED_APPS = [
     'utils',
     'users',
 
+    'social_django',
     # Sentry
     'raven.contrib.django.raven_compat',
+
 ]
+
+AUTHENTICATION_BACKENDS = [
+    'social_core.backends.open_id.OpenIdAuth',
+    'social_core.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -156,6 +170,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+
+                'social_django.context_processors.backends',  # <--
+                'social_django.context_processors.login_redirect',
             ],
         },
     },

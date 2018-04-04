@@ -1,16 +1,7 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
+{% extends 'base.html' %}
+
+{% block content %}
 <div class="signup-container">
-	<div class="signup-header">
-	</div>
 	<form action="" method="POST" class="clearfix">
 		{% csrf_token %}
 		{% for field in signup_form %}
@@ -27,5 +18,4 @@
 		</div>
 	</form>
 </div>
-</body>
-</html>
+{% endblock %}

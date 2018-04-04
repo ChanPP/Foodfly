@@ -16,7 +16,7 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 import members.views
 import users.views
@@ -24,7 +24,13 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', members.views.index, name='index'),
-    path('signup/', users.views.signup_view, name='test'),
+
+    path('', include('social_django.urls', namespace='social')),
+
+    path('login/', users.views.login_view, name='login'),
+    # path('facebook-login/', users.views.facebook_login, name='facebookg-login'),
+    path('logout/', users.views.logout_view, name='logout'),
+    path('signup/', users.views.signup_view, name='signup'),
 ]
 urlpatterns += static(
     settings.MEDIA_URL,
